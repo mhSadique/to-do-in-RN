@@ -14,10 +14,12 @@ const AppTheme = {
   ...DefaultTheme,
   colors: {
     ...DefaultTheme.colors,
-    backgroundColor: '#fff'
+    background: '#fff'
   }
 
 }
+
+console.log(DefaultTheme.colors);
 
 export default function App() {
   const [user, setUser] = useState(false); // not authenticated
