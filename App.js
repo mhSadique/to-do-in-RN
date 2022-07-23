@@ -9,7 +9,7 @@ import Edit from './src/screens/edit';
 import Create from './src/screens/create';
 import { useEffect, useState } from 'react';
 import { initializeApp } from "firebase/app";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
 import { getFirestore } from 'firebase/firestore'
 import FlashMessage from 'react-native-flash-message';
 
@@ -46,12 +46,21 @@ export default function App() {
         setUser(user);
         setloading(false);
       } else {
-        setUser(null)
+        setUser(null);
+        setloading(false)
       }
     });
 
     return authSubscription;
   }, [])
+
+  // useEffect(() => {
+  //   signOut(auth)
+  //     .then(res => {
+  //       setloading(false);
+  //     })
+  // });
+
 
   if (loading) { // show the loading spinner while the app checks if the user is logged in or not
     return (

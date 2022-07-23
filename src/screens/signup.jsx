@@ -25,11 +25,13 @@ const Signup = ({ navigation }) => {
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
   const [age, setAge] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const genderOptions = ["Male", "Female"];
   const auth = getAuth();
 
   const signUp = async () => {
+    setLoading(true);
     try {
       const userCredential = await createUserWithEmailAndPassword(
         auth,
@@ -43,22 +45,25 @@ const Signup = ({ navigation }) => {
         gender,
         uid: userCredential.user.uid,
       });
-      console.log(docRef);
+      setLoading(false);
     } catch (err) {
       showMessage({
         message: err.code,
         description: err.message,
         type: "danger",
       });
-      console.log(err.code);
-      console.log(err.message);
+      setLoading(false);
     }
   };
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View style={{ paddingHorizontal: 16, paddingVertical: 25 }}>
-        <Input placeholder="Email" onChangeText={(text) => setEmail(text)} />
+        <Input
+          placeholder="Email"
+          onChangeText={(text) => setEmail(text)}
+          autoCapitalize="none"
+        />
         <Input
           placeholder="Password"
           secureTextEntry

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -10,8 +10,23 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import Button from "../componentss/Button";
 import Input from "../componentss/Input";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../../App";
 
 const Signin = ({ navigation }) => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const login = () => {
+    signInWithEmailAndPassword(auth, email, password)
+      .then((res) => {
+        console.log("logged in -->", res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <Image
@@ -23,11 +38,20 @@ const Signin = ({ navigation }) => {
       </Text>
 
       <View style={{ paddingHorizontal: 16, paddingVertical: 25 }}>
-        <Input placeholder="Email" />
-        <Input placeholder="Password" secureTextEntry={true} />
+        <Input
+          placeholder="Email"
+          onChangeText={(text) => setEmail(text)}
+          autoCapitalize="none"
+        />
+        <Input
+          placeholder="Password"
+          secureTextEntry={true}
+          onChangeText={(text) => setPassword(text)}
+        />
         <Button
           title="Login"
           customStyle={{ alignSelf: "center", marginTop: 60 }}
+          onPress={login}
         />
       </View>
       <View
