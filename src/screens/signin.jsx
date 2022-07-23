@@ -9,8 +9,9 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Button from "../componentss/Button";
+import Input from "../componentss/Input";
 
-const Signin = () => {
+const Signin = ({ navigation }) => {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <Image
@@ -22,12 +23,8 @@ const Signin = () => {
       </Text>
 
       <View style={{ paddingHorizontal: 16, paddingVertical: 25 }}>
-        <TextInput placeholder="Email" style={styles.input} />
-        <TextInput
-          placeholder="Password"
-          style={styles.input}
-          secureTextEntry
-        />
+        <Input placeholder="Email" />
+        <Input placeholder="Password" secureTextEntry={true} />
         <Button
           title="Login"
           customStyle={{ alignSelf: "center", marginTop: 60 }}
@@ -40,7 +37,12 @@ const Signin = () => {
           alignItems: "center",
         }}
       >
-        <Pressable style={{ marginBottom: 20 }}>
+        <Pressable
+          style={{ marginBottom: 20 }}
+          onPress={() => {
+            navigation.navigate("Signup");
+          }}
+        >
           <Text style={{ color: "black" }}>
             Don't have an account?{" "}
             <Text style={{ color: "green" }}>Sign Up</Text>
