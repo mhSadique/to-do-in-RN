@@ -8,6 +8,19 @@ import Signup from './src/screens/signup';
 import Edit from './src/screens/edit';
 import Create from './src/screens/create';
 import { useState } from 'react';
+import { initializeApp } from "firebase/app";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyA56nEGmzYB7SQjBmJvGYbw4irugsIqywg",
+  authDomain: "note-app-e6990.firebaseapp.com",
+  projectId: "note-app-e6990",
+  storageBucket: "note-app-e6990.appspot.com",
+  messagingSenderId: "471579915621",
+  appId: "1:471579915621:web:d061176fd1e178d50e9d8c"
+};
+console.log(firebaseConfig);
+
+const app = initializeApp(firebaseConfig);
 
 const Stack = createNativeStackNavigator();
 const AppTheme = {
@@ -25,11 +38,11 @@ export default function App() {
   const [user, setUser] = useState(false); // not authenticated
   return (
     <NavigationContainer theme={AppTheme}>
-      <Stack.Navigator screenOptions={{headerShown: false}}>
+      <Stack.Navigator screenOptions={{ headerShown: false }}>
         {
           user ? (
             <>
-              <Stack.Screen name='Home' component={Home} /> 
+              <Stack.Screen name='Home' component={Home} />
               <Stack.Screen name='Edit' component={Edit} />
               <Stack.Screen name='Create' component={Create} />
             </>

@@ -10,17 +10,43 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import Button from "../componentss/Button";
 import Input from "../componentss/Input";
+import {
+  createUserWithEmailAndPassword,
+  getAuth,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
 
 const Signup = ({ navigation }) => {
   const [gender, setGender] = useState(null);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [name, setName] = useState("");
+  const [age, setAge] = useState("");
+
   const genderOptions = ["Male", "Female"];
+  const auth = getAuth();
+  const signUp = () => {
+    createUserWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        console.log(userCredential.user);
+      })
+      .catch((err) => {
+        console.log(err.code);
+        console.log(err.message);
+      });
+  };
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View style={{ paddingHorizontal: 16, paddingVertical: 25 }}>
-        <Input placeholder="Email" />
-        <Input placeholder="Password" secureTextEntry />
-        <Input placeholder="Full Name" />
-        <Input placeholder="Age" />
+        <Input placeholder="Email" onChangeText={(text) => setEmail(text)} />
+        <Input
+          placeholder="Password"
+          secureTextEntry
+          onChangeText={(text) => setPassword(text)}
+        />
+        <Input placeholder="Full Name" onChangeText={(text) => setName(text)} />
+        <Input placeholder="Age" onChangeText={(text) => setAge(text)} />
 
         {genderOptions.map((option) => {
           const selected = option === gender;
@@ -49,6 +75,7 @@ const Signup = ({ navigation }) => {
         })}
 
         <Button
+          onPress={signUp}
           title="Sign up"
           customStyle={{ alignSelf: "center", marginTop: 60 }}
         />
