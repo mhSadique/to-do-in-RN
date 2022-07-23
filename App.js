@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
 import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Home from './src/screens/home';
@@ -38,11 +38,13 @@ const AppTheme = {
 
 export default function App() {
   const [user, setUser] = useState(null);
+  const [loading, setloading] = useState(true);
 
   useEffect(() => {
     const authSubscription = onAuthStateChanged(auth, user => {
       if (user) {
-        setUser(user)
+        setUser(user);
+        setloading(false);
       } else {
         setUser(null)
       }
@@ -51,6 +53,14 @@ export default function App() {
     return authSubscription;
   }, [])
 
+  if (loading) { // show the loading spinner while the app checks if the user is logged in or not
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <ActivityIndicator color='blue' size='large' />
+      </View>
+    )
+  }
+
   return (
     <>
       <NavigationContainer theme={AppTheme}>
@@ -58,7 +68,9 @@ export default function App() {
           {
             user ? (
               <>
-                <Stack.Screen name='Home' component={Home} />
+                <Stack.Screen name='Home'>
+                  {(props) => <Home {...props} user={user} />}
+                </Stack.Screen>
                 <Stack.Screen name='Edit' component={Edit} />
                 <Stack.Screen name='Create' component={Create} />
               </>
