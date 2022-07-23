@@ -15,6 +15,9 @@ import {
   getAuth,
   signInWithEmailAndPassword,
 } from "firebase/auth";
+import { addDoc, collection } from "firebase/firestore";
+import { showMessage } from "react-native-flash-message";
+import { db } from "../../App";
 
 const Signup = ({ navigation }) => {
   const [gender, setGender] = useState(null);
@@ -25,15 +28,31 @@ const Signup = ({ navigation }) => {
 
   const genderOptions = ["Male", "Female"];
   const auth = getAuth();
-  const signUp = () => {
-    createUserWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        console.log(userCredential.user);
-      })
-      .catch((err) => {
-        console.log(err.code);
-        console.log(err.message);
+
+  const signUp = async () => {
+    try {
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      const docRef = await addDoc(collection(db, "users"), {
+        name,
+        email,
+        age,
+        gender,
+        uid: userCredential.user.uid,
       });
+      console.log(docRef);
+    } catch (err) {
+      showMessage({
+        message: err.code,
+        description: err.message,
+        type: "danger",
+      });
+      console.log(err.code);
+      console.log(err.message);
+    }
   };
 
   return (

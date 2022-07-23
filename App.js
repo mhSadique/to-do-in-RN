@@ -7,8 +7,11 @@ import Signin from './src/screens/signin';
 import Signup from './src/screens/signup';
 import Edit from './src/screens/edit';
 import Create from './src/screens/create';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { initializeApp } from "firebase/app";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { getFirestore } from 'firebase/firestore'
+import FlashMessage from 'react-native-flash-message';
 
 const firebaseConfig = {
   apiKey: "AIzaSyA56nEGmzYB7SQjBmJvGYbw4irugsIqywg",
@@ -18,9 +21,10 @@ const firebaseConfig = {
   messagingSenderId: "471579915621",
   appId: "1:471579915621:web:d061176fd1e178d50e9d8c"
 };
-console.log(firebaseConfig);
 
 const app = initializeApp(firebaseConfig);
+export const auth = getAuth();
+export const db = getFirestore(app);
 
 const Stack = createNativeStackNavigator();
 const AppTheme = {
@@ -32,37 +36,43 @@ const AppTheme = {
 
 }
 
-console.log(DefaultTheme.colors);
-
 export default function App() {
-  const [user, setUser] = useState(false); // not authenticated
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const authSubscription = onAuthStateChanged(auth, user => {
+      if (user) {
+        setUser(user)
+      } else {
+        setUser(null)
+      }
+    });
+
+    return authSubscription;
+  }, [])
+
   return (
-    <NavigationContainer theme={AppTheme}>
-      <Stack.Navigator screenOptions={{ headerShown: false }}>
-        {
-          user ? (
-            <>
-              <Stack.Screen name='Home' component={Home} />
-              <Stack.Screen name='Edit' component={Edit} />
-              <Stack.Screen name='Create' component={Create} />
-            </>
-          ) : (
-            <>
-              <Stack.Screen name='Signin' component={Signin} />
-              <Stack.Screen name='Signup' component={Signup} />
-            </>
-          )
-        }
-      </Stack.Navigator>
-    </NavigationContainer>
+    <>
+      <NavigationContainer theme={AppTheme}>
+        <Stack.Navigator screenOptions={{ headerShown: false }}>
+          {
+            user ? (
+              <>
+                <Stack.Screen name='Home' component={Home} />
+                <Stack.Screen name='Edit' component={Edit} />
+                <Stack.Screen name='Create' component={Create} />
+              </>
+            ) : (
+              <>
+                <Stack.Screen name='Signin' component={Signin} />
+                <Stack.Screen name='Signup' component={Signup} />
+              </>
+            )
+          }
+        </Stack.Navigator>
+      </NavigationContainer>
+      <FlashMessage position='bottom' />
+    </>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
