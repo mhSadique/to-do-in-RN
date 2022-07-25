@@ -7,13 +7,14 @@ import {
   Pressable,
   ActivityIndicator,
 } from "react-native";
+import { showMessage } from "react-native-flash-message";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { db } from "../../App";
 import Button from "../components/Button";
 import Input from "../components/Input";
 
 const noteColorOptions = ["red", "green", "blue"];
-const Create = ({ user }) => {
+const Create = ({ user, navigation }) => {
   const [noteColor, setNoteColor] = useState("blue");
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -29,6 +30,11 @@ const Create = ({ user }) => {
         uid: user.uid,
       });
       setLoading(false);
+      showMessage({
+        message: "Note created successfully",
+        type: "success",
+      });
+      navigation.goBack();
       console.log(docRef);
     } catch (err) {
       setLoading(false);

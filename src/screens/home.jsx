@@ -25,6 +25,7 @@ const Home = ({ user, navigation }) => {
     const { title, color, description } = item;
     return (
       <Pressable
+        onPress={() => navigation.navigate("Edit", { item })}
         style={{
           backgroundColor: color,
           marginBottom: 25,
