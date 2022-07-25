@@ -8,8 +8,8 @@ import {
   Pressable,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import Button from "../componentss/Button";
-import Input from "../componentss/Input";
+import Button from "../components/Button";
+import Input from "../components/Input";
 import {
   createUserWithEmailAndPassword,
   getAuth,
@@ -69,7 +69,11 @@ const Signup = ({ navigation }) => {
           secureTextEntry
           onChangeText={(text) => setPassword(text)}
         />
-        <Input placeholder="Full Name" onChangeText={(text) => setName(text)} />
+        <Input
+          placeholder="Full Name"
+          onChangeText={(text) => setName(text)}
+          autoCapitalize="words"
+        />
         <Input placeholder="Age" onChangeText={(text) => setAge(text)} />
 
         {genderOptions.map((option) => {

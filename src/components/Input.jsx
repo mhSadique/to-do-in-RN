@@ -6,6 +6,7 @@ const Input = ({
   secureTextEntry,
   onChangeText,
   autoCapitalize,
+  multiline,
 }) => {
   return (
     <TextInput
@@ -14,6 +15,7 @@ const Input = ({
       style={styles.input}
       secureTextEntry={secureTextEntry}
       autoCapitalize={autoCapitalize}
+      multiline={multiline}
     />
   );
 };

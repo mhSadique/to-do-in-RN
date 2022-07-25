@@ -8,8 +8,8 @@ import {
   Pressable,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import Button from "../componentss/Button";
-import Input from "../componentss/Input";
+import Button from "../components/Button";
+import Input from "../components/Input";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../App";
 
